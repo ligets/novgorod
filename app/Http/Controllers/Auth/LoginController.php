@@ -16,15 +16,8 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('login', $req->login);
-        if($user){
-            if (Hash::check($req->password, $user->password)) {
-                Auth::login($user);
-                return redirect(route('profile'));
-            }
-            else {
-                return redirect(route('login'))->with('error', 'Неверный логин или пароль');
-            }
+        if(Auth::attempt($req->only('login', 'password'))){
+            return redirect(route('profile'));
         }
         else{
             return redirect(route('login'))->with('error', 'Неверный логин или пароль');
