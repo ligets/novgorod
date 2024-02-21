@@ -7,20 +7,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
     public function login(Request $req) {
-        $req->validate([
+        $data = $req->validate([
             'login' => 'required',
             'password' => 'required'
         ]);
 
-        if(Auth::attempt($req->only('login', 'password'))){
-            return redirect(route('profile'));
+        if(!Auth::attempt($data, $req->boolean('remember'))){
+            throw ValidationException::withMessages([
+                'email' => 'Неверный логин или пароль.'
+            ]);
         }
-        else{
-            return redirect(route('login'))->with('error', 'Неверный логин или пароль');
-        }
+        return redirect()->intended('/');        
     }
 }
