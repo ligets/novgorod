@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('albums', function (Blueprint $table) {
+        Schema::create('user_albums', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('type_id');
-            $table->timestamps();
-            
+
+            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('album_id')->index();
+
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('type_id')->references('id')->on('types');
+            $table->foreign('album_id')->references('id')->on('albums');
+
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('albums');
+        Schema::dropIfExists('user_albums');
     }
 };
