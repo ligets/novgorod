@@ -10,7 +10,7 @@ class Album extends Model
 {
     use HasFactory;
 
-    public function albums() {
+    public function authors() {
         return $this->belongsToMany(User::class, 'user_albums', 'album_id', 'user_id');
     }
 }
