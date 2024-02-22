@@ -17,10 +17,23 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/login', function () {
-    return view('login');
-})->middleware('guest')->name('login');
+/* Создание группы маршрутов авторизации/регистрации/выхода,
+   с проверкой от кого идет запрос(если от гостя то запрос отправляется)
+   с Префиксом auth/...
+   Перенапровление идёт на соответствующие контроллеры */
+Route::middleware('guest')->prefix('auth')->group(function () {
+    Route::post('/login', 'App\\Http\\Controllers\\Auth\\LoginController@login')->name('login');
+    Route::post('/registration', 'App\\Http\\Controllers\\Auth\\RegistrController@registr')->name('registration');
+    Route::post('/logout', 'App\\Http\\Controllers\\Auth\\LoginController@logout')->name('logout');
+});
 
-Route::get('profile', function() {
-    return view('profile');
-})->middleware('auth')->name('profile');
+/* Создание группы маршрутов
+   которые доступны только авторизованному пользователю */
+Route::middleware(['auth'/*, 'verified'*/])->group(function () {
+    Route::get('/profile', function() {
+        return view('profile');
+    })->name('profile');
+
+    //Сделать динамические ссылки альбома && редактора фото
+
+});
