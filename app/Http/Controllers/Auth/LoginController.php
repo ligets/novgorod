@@ -15,6 +15,9 @@ class LoginController extends Controller
         $data = $req->validate([
             'login' => 'required',
             'password' => 'required'
+        ], [
+            'login.required' => 'Поле логина обязательно для заполнения.',
+            'password.required' => 'Поле пароля обязательно для заполнения.'
         ]);
 
         if(!Auth::attempt($data, $req->boolean('remember'))){
