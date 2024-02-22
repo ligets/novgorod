@@ -22,6 +22,18 @@ class LoginController extends Controller
                 'email' => 'Неверный логин или пароль.'
             ]);
         }
+
+        $req->session()->regenerate();
+
         return redirect()->intended('/');        
+    }
+
+    public function logout(Request $req){
+        Auth::logout();
+
+        $req->session()->invalidate();
+        $req->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
