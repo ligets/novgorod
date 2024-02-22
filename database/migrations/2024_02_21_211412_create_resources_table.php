@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('format', 15);
-            $table->json('tegs')->nullable();
             $table->string('metadata', 255);
             $table->boolean('in_album')->default(false);
             $table->timestamps();
