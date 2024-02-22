@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     use HasFactory;
+
+    public function resources() {
+        return $this->belongsToMany(Resource::class, 'resource_tags', 'tag_id', 'resource_id');
+    }
 }
