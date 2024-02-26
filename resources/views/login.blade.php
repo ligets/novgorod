@@ -17,6 +17,8 @@
                         <input type="password" class="form-control rounded-3" id="floatingPassword" name="password" placeholder="Password">
                         <label for="floatingPassword">Пароль</label>
                     </div>
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Запомнить на этом устройстве</label>
                     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-dark" type="submit">Войти</button>
                 </form>
             </div>
