@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('album_id')->index();
+            $table->string('role', 15);
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('album_id')->references('id')->on('albums');

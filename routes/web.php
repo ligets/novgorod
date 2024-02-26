@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
+use App\Models\Album;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +16,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 })->name('home');
+
+Route::get('time', function () {
+    $password = 'legen2a777';
+    echo Hash::make($password);
+});
+
+Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
+
 
 /* Создание группы маршрутов авторизации/регистрации/выхода,
    с проверкой от кого идет запрос(если от гостя то запрос отправляется)
    с Префиксом auth/...
    Перенапровление идёт на соответствующие контроллеры */
 Route::middleware('guest')->prefix('auth')->group(function () {
-    Route::post('/login', 'App\\Http\\Controllers\\Auth\\LoginController@login')->name('login');
+    Route::get('/login', function () {
+        return view('login');
+    })->name('get_login');
+
+
+    Route::post('/login', 'App\\Http\\Controllers\\Auth\\LoginController@login')->name('post_login');
     Route::post('/registration', 'App\\Http\\Controllers\\Auth\\RegistrController@registr')->name('registration');
     Route::post('/logout', 'App\\Http\\Controllers\\Auth\\LoginController@logout')->name('logout');
 });
