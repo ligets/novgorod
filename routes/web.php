@@ -25,6 +25,7 @@ Route::get('time', function () {
 });
 
 Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
+Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
 
 
 /* Создание группы маршрутов авторизации/регистрации/выхода,

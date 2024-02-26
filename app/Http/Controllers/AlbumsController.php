@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Album;
 use App\Models\UserAlbum;
+use Carbon\Carbon;
 
 class AlbumsController extends Controller {
     public function create(Request $req) {
@@ -35,6 +36,41 @@ class AlbumsController extends Controller {
             'album_id' => $album->id,
             'role' => 'owner'
         ]);
+    }
+
+    public function edit_authors(Request $req, $id){
+        // $authors = $req->authors;
+        $authors = [2, 3];
+        UserAlbum::whereNotIn('user_id', $authors)
+            ->where('role', 'author')
+            ->where('album_id', $id)
+            ->delete();
+
+        $existingAuthors = UserAlbum::where('role', 'author')
+            ->where('album_id', $id)
+            ->pluck('user_id') // Получаем массив всех идентификаторов авторов альбома
+            ->toArray();
+
+        $authorsToAdd = array_diff($authors, $existingAuthors); // Находим идентификаторы авторов, которых еще нет в списке
+
+
+        $dataToInsert = [];
+
+        $time = Carbon::now()->timezone('Europe/Moscow')->toDateTimeString();
+        // Создаем новые записи для каждого автора, которого еще нет в списке
+        foreach ($authorsToAdd as $authorId) {
+            $dataToInsert[] = [
+                'user_id' => $authorId,
+                'album_id' => $id,
+                'role' => 'author',
+                'created_at' => $time, // Предположим, что нужно указать временные метки
+                'updated_at' => $time
+            ];
+        }
+        
+        if (!empty($dataToInsert)) {
+            UserAlbum::insert($dataToInsert);
+        }
     }
 
     public function get($id){
