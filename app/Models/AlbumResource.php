@@ -14,4 +14,9 @@ class AlbumResource extends Model
         'album_id',
         'resource_id',
     ];
+
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class);
+    }
 }

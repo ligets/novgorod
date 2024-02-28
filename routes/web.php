@@ -42,6 +42,8 @@ Route::middleware('guest')->prefix('auth')->group(function () {
     Route::post('/logout', 'App\\Http\\Controllers\\Auth\\LoginController@logout')->name('logout');
 });
 
+Route::get('resources/download/{type}/{id}', 'App\\Http\\Controllers\\ResourcesController@download')->name('download.store');
+
 /* Создание группы маршрутов
    которые доступны только авторизованному пользователю */
 Route::middleware(['auth'/*, 'verified'*/])->group(function () {

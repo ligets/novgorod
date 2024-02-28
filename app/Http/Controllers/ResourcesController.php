@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Rules\ImageOrVideo;
 use App\Models\Resource;
 use App\Models\AlbumResource;
+use App\Models\Album;
 // use Illuminate\Support\Facades\Storage;
 // use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
@@ -19,6 +20,8 @@ use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException;
+
+use ZipArchive;
 
 class ResourcesController extends Controller
 {
@@ -160,5 +163,47 @@ class ResourcesController extends Controller
         } else {
             return 'other';
         }
+    }
+
+    public function download($type, $id){
+        switch($type){
+            case 'image':
+            case 'video':
+                return $this->downloadResource($id);
+                break;
+            case 'album':
+                return $this->downloadAlbum($id);
+                break;
+            default:
+                abort(404, 'Страницы не найдена');
+        }
+    }
+
+    protected function downloadResource($id){
+
+    }
+
+    protected function downloadAlbum($id){
+        $album = Album::findOrFail($id);
+        $zipFileName = $album->title . '.zip';
+        $zip = new ZipArchive();
+        if (!$zip->open($zipFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
+            return response()->json(['message' => 'Не удалось создать zip-архив'], 500);
+        }
+        $albumResources = AlbumResource::where('album_id', $album->id)->get();
+        foreach($albumResources as $albumResource){
+            $resource = $albumResource->resource()->first();
+
+            if(Storage::disk('public')->exists($resource->path)){
+                $filePath = Storage::disk('public')->path($resource->path);
+                $relativePath = basename($resource->path);
+
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+
+        $zip->close();
+
+        return response()->download($zipFileName)->deleteFileAfterSend(false);
     }
 }
