@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 // use Illuminate\Validation\ValidationException;
 use App\Rules\ImageOrVideo;
 use App\Models\Resource;
+use App\Models\AlbumResource;
 // use Illuminate\Support\Facades\Storage;
 // use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +33,7 @@ class ResourcesController extends Controller
         }
         $in_album = false;
         if(isset($request->in_album)){
-            $in_album = true;
+            $in_album = $request->in_album;
         }
         $type = $request->type;
 
@@ -93,13 +94,30 @@ class ResourcesController extends Controller
 
         $fileFormat = $this->detectFileFormat($file);
 
-        $resource = new Resource();
-        $resource->user_id = Auth::user()->id;
-        $resource->path = $filePath . '/' . $fileName;
-        $resource->format = $fileFormat;
-        $resource->in_album = $in_album;
-        $resource->type_id = $type;
-        $resource->save();
+        // $resource = new Resource();
+        // $resource->user_id = Auth::user()->id;
+        // $resource->path = $filePath . '/' . $fileName;
+        // $resource->format = $fileFormat;
+        // if($in_album){
+        //     $resource->in_album = true;
+        // }
+        // $resource->type_id = $type;
+        // $resource->save();
+        $resource_id = Resource::create([
+            'user_id' => Auth::user()->id,
+            'path' => $filePath . '/' . $fileName,
+            'format' => $fileFormat,
+            'in_album' => $in_album ? true : false,
+            'type_id' => $type
+        ])->id;
+        if($in_album){
+            AlbumResource::create([
+                'user_id' => Auth::user()->id,
+                'album_id' => $in_album,
+                'resource_id' => $resource_id
+            ]);
+        }
+
 
         return response()->json([
             'path' => asset('storage/' . $filePath),

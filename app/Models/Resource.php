@@ -11,6 +11,14 @@ class Resource extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'path',
+        'format',
+        'in_album',
+        'type_id'
+    ];
+
     public function tags() {
         return $this->belongsToMany(Tag::class, 'resource_tags', 'resource_id', 'tag_id');
     }

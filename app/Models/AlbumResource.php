@@ -9,5 +9,9 @@ class AlbumResource extends Model
 {
     use HasFactory;
 
-    
+    protected $fillable = [
+        'user_id',
+        'album_id',
+        'resource_id',
+    ];
 }
