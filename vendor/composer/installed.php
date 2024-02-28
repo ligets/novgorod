@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'f3fe130292e360246b1f48fc2877cf0c4d16120d',
+        'reference' => '04a242e4fe4bf9181e32aa2ff5074131032ee4b9',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -382,7 +382,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'f3fe130292e360246b1f48fc2877cf0c4d16120d',
+            'reference' => '04a242e4fe4bf9181e32aa2ff5074131032ee4b9',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -654,6 +654,15 @@
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'pion/laravel-chunk-upload' => array(
+            'pretty_version' => 'v1.5.2',
+            'version' => '1.5.2.0',
+            'reference' => 'dcf5cf42059910242c31fc34d0ea147d07478473',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../pion/laravel-chunk-upload',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'psr/clock' => array(
             'pretty_version' => '1.0.0',

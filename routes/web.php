@@ -27,6 +27,8 @@ Route::get('time', function () {
 Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
 Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
 
+Route::get('media', 'App\\Http\\Controllers\\MediaController@publicMedia');
+
 
 /* Создание группы маршрутов авторизации/регистрации/выхода,
    с проверкой от кого идет запрос(если от гостя то запрос отправляется)
@@ -50,6 +52,7 @@ Route::middleware(['auth'/*, 'verified'*/])->group(function () {
         return view('profile');
     })->name('profile');
 
+    Route::post('resources/upload', 'App\\Http\\Controllers\\ResourcesController@store')->name('upload.store');
     //Сделать динамические ссылки альбома && редактора фото
 
 });
