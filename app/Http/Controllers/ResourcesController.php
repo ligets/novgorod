@@ -204,6 +204,6 @@ class ResourcesController extends Controller
 
         $zip->close();
 
-        return response()->download($zipFileName)->deleteFileAfterSend(false);
+        return response()->download($zipFileName)->deleteFileAfterSend(true);
     }
 }
