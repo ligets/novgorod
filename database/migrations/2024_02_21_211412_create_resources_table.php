@@ -15,16 +15,16 @@ return new class extends Migration
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('path');
             $table->string('format', 15);
-            $table->string('metadata', 255);
+            $table->string('metadata', 255)->nullable();
             $table->boolean('in_album')->default(false);
+            $table->unsignedBigInteger('type_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
         });
-
-        DB::statement('ALTER TABLE resources ADD data LONGBLOB AFTER in_album');
-
     }
 
     /**
