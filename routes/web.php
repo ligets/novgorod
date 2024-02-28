@@ -24,9 +24,6 @@ Route::get('time', function () {
     echo Hash::make($password);
 });
 
-Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
-Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
-
 Route::get('media', 'App\\Http\\Controllers\\MediaController@publicMedia');
 
 
@@ -53,6 +50,7 @@ Route::middleware(['auth'/*, 'verified'*/])->group(function () {
     })->name('profile');
 
     Route::post('resources/upload', 'App\\Http\\Controllers\\ResourcesController@store')->name('upload.store');
-    //Сделать динамические ссылки альбома && редактора фото
-
+    
+    Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
+    Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
 });

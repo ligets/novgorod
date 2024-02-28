@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Album;
 use App\Models\UserAlbum;
 use Carbon\Carbon;
+use App\Http\Controllers\MediaController;
 
 class AlbumsController extends Controller {
     public function create(Request $req) {
@@ -78,7 +79,7 @@ class AlbumsController extends Controller {
         $type = $album->type()->first()->name;
         switch($type){
             case 'public':
-                return ;
+                return MediaController::albumMedia($album->id);
                 break;
             case 'group':
             case 'private':
@@ -97,12 +98,12 @@ class AlbumsController extends Controller {
         if(!$album->authors()->where('role', 'owner')->where('user_id', Auth::user()->id)->exists()){
             abort(403, 'Доступ запрещён');
         }
-        return "Доступ разрешён";
+        return MediaController::albumMedia($album->id);
     }
     protected function group($album){
         if (!$album->authors()->where('user_id', Auth::user()->id)->exists()) {
             abort(403, 'Доступ запрещён');
         }
-        return "Доступ разрешён";
+        return MediaController::albumMedia($album->id);
     }
 }

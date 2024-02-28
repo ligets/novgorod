@@ -3,7 +3,8 @@ let browseFile = $('#browseFile');
         target: '/resources/upload',
         query: {
             _token: $('meta[name="csrf-token"]').attr('content'),
-            type: '1'
+            type: '2',
+            // in_album: '1'
         },
         fileType: [
             // RAW
