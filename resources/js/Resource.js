@@ -4,6 +4,7 @@ let browseFile = $('#browseFile');
         query: {
             _token: $('meta[name="csrf-token"]').attr('content'),
             type: '1',
+            tags: 'Ex1, Ex2, Ex3',
             // in_album: '1'
         },
         fileType: [
@@ -36,9 +37,9 @@ let browseFile = $('#browseFile');
     });
 
     resumable.on('fileSuccess', function (file, response) { // trigger when file upload complete
-        
-        response = JSON.parse(response);
         console.log(response);
+        response = JSON.parse(response);
+        
         if (response.mime_type.includes("image")) {
             $('#imagePreview').attr('src', response.path + '/' + response.name).show();
         }

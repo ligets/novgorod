@@ -9,6 +9,7 @@ use App\Models\Resource;
 use App\Models\AlbumResource;
 use App\Models\Album;
 use App\Models\UserAlbum;
+use App\Models\Tag;
 // use Illuminate\Support\Facades\Storage;
 // use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -38,17 +40,19 @@ class ResourcesController extends Controller
         $in_album = false;
         if(isset($request->in_album)){
             $in_album = $request->in_album;
-        }
-        $type = $request->type;
+        }        
 
         // receive the file
         $save = $receiver->receive();
 
         // check if the upload has finished (in chunk mode it will send smaller files)
         if ($save->isFinished()) {
+            $type = $request->type;
+
+            $tags = explode(', ', $request->tags);
             // save the file and return any response you need, current example uses `move` function. If you are
             // not using move, you need to manually delete the file by unlink($save->getFile()->getPathname())
-            return $this->saveFile($save->getFile(), $in_album, $type);
+            return $this->saveFile($save->getFile(), $in_album, $type, $tags);
         }
 
         // we are in chunk mode, lets send the current progress
@@ -67,7 +71,7 @@ class ResourcesController extends Controller
      *
      * @return JsonResponse
      */
-    protected function saveFile(UploadedFile $file, $in_album, $type)
+    protected function saveFile(UploadedFile $file, $in_album, $type, $tags)
     {
         $validator = Validator::make(
             ['file' => $file],
@@ -98,27 +102,26 @@ class ResourcesController extends Controller
 
         $fileFormat = $this->detectFileFormat($file);
 
-        // $resource = new Resource();
-        // $resource->user_id = Auth::user()->id;
-        // $resource->path = $filePath . '/' . $fileName;
-        // $resource->format = $fileFormat;
-        // if($in_album){
-        //     $resource->in_album = true;
-        // }
-        // $resource->type_id = $type;
-        // $resource->save();
-        $resource_id = Resource::create([
+        $resource = Resource::create([
             'user_id' => Auth::user()->id,
             'path' => $filePath . '/' . $fileName,
             'format' => $fileFormat,
             'in_album' => $in_album ? true : false,
             'type_id' => $type
-        ])->id;
+        ]);
+        
+        foreach ($tags as $tagName) {
+            $tag = Tag::firstOrCreate([
+                'name' => $tagName
+            ]);
+            $resource->tags()->attach($tag->id, ['resource_id' => $resource->id]);
+        }
+
         if($in_album){
             AlbumResource::create([
                 'user_id' => Auth::user()->id,
                 'album_id' => $in_album,
-                'resource_id' => $resource_id
+                'resource_id' => $resource->id
             ]);
         }
 
