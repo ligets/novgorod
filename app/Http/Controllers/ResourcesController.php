@@ -8,6 +8,7 @@ use App\Rules\ImageOrVideo;
 use App\Models\Resource;
 use App\Models\AlbumResource;
 use App\Models\Album;
+use App\Models\UserAlbum;
 // use Illuminate\Support\Facades\Storage;
 // use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
@@ -164,11 +165,10 @@ class ResourcesController extends Controller
             return 'other';
         }
     }
-
+    // УСТАНОВКА ИДЁТ ПО ССЫЛКЕ
     public function download($type, $id){
         switch($type){
-            case 'image':
-            case 'video':
+            case 'resource':
                 return $this->downloadResource($id);
                 break;
             case 'album':
@@ -178,13 +178,50 @@ class ResourcesController extends Controller
                 abort(404, 'Страницы не найдена');
         }
     }
-
+    
     protected function downloadResource($id){
+        $resource = Resource::findOrFail($id);
+        $type = $resource->type()->first()->name;
 
+        switch($type){
+            case 'public':
+                break;
+            case 'group':
+            case 'private':
+                if (!Auth::check()) {
+                    return redirect(route('login'));
+                }
+                $this->{$type . 'Resource'}($resource);
+                break;
+            default:
+                abort(404, 'Ресурс не найден');
+        }
+        if(Storage::disk('public')->exists($resource->path)){
+            return Storage::disk('public')->download($resource->path);
+            
+        }
     }
 
     protected function downloadAlbum($id){
         $album = Album::findOrFail($id);
+        $type = $album->type()->first()->name;
+
+        switch($type){
+            case 'public':
+                break;
+            case 'group':
+            case 'private':
+                // Проверка аутентификации
+                if (!Auth::check()) {
+                    return redirect(route('login'));
+                }
+                // Вызов соответствующего метода в зависимости от типа альбома
+                $this->{$type}($album);
+                break;
+            default:
+                abort(404, 'Альбом не найден');
+        }
+
         $zipFileName = $album->title . '.zip';
         $zip = new ZipArchive();
         if (!$zip->open($zipFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
@@ -205,5 +242,27 @@ class ResourcesController extends Controller
         $zip->close();
 
         return response()->download($zipFileName)->deleteFileAfterSend(true);
+    }
+
+    protected function private($album){
+        if(!$album->authors()->where('role', 'owner')->where('user_id', Auth::user()->id)->exists()){
+            abort(403, 'Доступ запрещён');
+        }
+    }
+    protected function group($album){
+        if (!$album->authors()->where('user_id', Auth::user()->id)->exists()) {
+            abort(403, 'Доступ запрещён');
+        }
+    }
+    protected function groupResource($resource){
+        $album_id = AlbumResource::where('resource_id', $resource->id)->first()->album_id;
+        if(!UserAlbum::where('album_id', $album_id)->where('user_id', Auth::user()->id)->exists()){
+            abort(403, 'Доступ запрещён');
+        }
+    }
+    protected function privateResource($resource){
+        if($resource->user_id !== Auth::user()->id){
+            abort(403, 'Доступ запрещён');
+        }
     }
 }

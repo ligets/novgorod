@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Медиа</title>
 </head>
 <body>
@@ -17,5 +18,7 @@
             @endif
         @endforeach
     </div>
+    <button id="download" type="button">Скачать 34 id ресурс</button>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </body>
 </html>
