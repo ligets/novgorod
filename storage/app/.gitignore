@@ -1,3 +1,4 @@
 *
 !public/
+!py_scripts/
 !.gitignore

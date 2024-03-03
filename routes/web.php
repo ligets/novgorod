@@ -14,9 +14,36 @@ use App\Models\Album;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/py', 'App\\Http\\Controllers\\PyController@handle');
 Route::get('/', function () {
     return view('home');
+    //C:\Users\Danil\Desktop\novgorod\storage\app\py_scripts\SSD_OD\main.py
+    //echo 'C:\Users\Danil\Desktop\novgorod\storage\app\py_scripts\SSD_OD\main.py';
+    // return base_path('\storage\app\py_scripts\SSD_OD\main.py');
+    // $script_path = str_replace('\\', '/', base_path('\storage\app\py_scripts\SSD_OD\main.py'));
+    
+    // $image_path = base_path('storage\\app\\public\\' . 'upload/image-jpeg/2024-02-09/78067c142e4ded9d00e046771269aade.jpg');
+    
+    // $indexes = shell_exec("python {$script_path} {$image_path}");
+    // return $indexes;
+    // preg_match_all('/\d+/', $indexes, $matches);
+
+    // // Получаем массив чисел из строки      
+    // $numbers = $matches[0];
+
+    // // Преобразуем числа из строки в числа
+    // $indexes = array_map('intval', $numbers);
+    // return $indexes;
+    // // Проходим по каждому индексу из $indexes и добавляем соответствующее слово в массив $words
+    // foreach ($indexes as $index) {
+    //     // Если индекс есть в словаре, добавляем соответствующее слово в массив $words
+    //     if (isset($this->coco_names[$index])) {
+    //         $tag = Tag::firstOrCreate([
+    //             'name' => $this->coco_names[$index]
+    //         ]);
+    //         $this->resource->tags()->attach($tag->id, ['resource_id' => $resource->id]);
+    //     }
+    // }
 })->name('home');
 
 Route::get('time', function () {
@@ -43,6 +70,8 @@ Route::middleware('guest')->prefix('auth')->group(function () {
 });
 
 Route::get('resources/download/{type}/{id}', 'App\\Http\\Controllers\\ResourcesController@download')->name('download.store');
+
+
 
 /* Создание группы маршрутов
    которые доступны только авторизованному пользователю */

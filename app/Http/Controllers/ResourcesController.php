@@ -18,6 +18,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Process;
 
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -62,6 +63,10 @@ class ResourcesController extends Controller
             "done" => $handler->getPercentageDone(),
             'status' => true
         ]);
+    }
+
+    protected function runPy(){
+        
     }
 
     /**
@@ -124,8 +129,7 @@ class ResourcesController extends Controller
                 'resource_id' => $resource->id
             ]);
         }
-
-
+        PyController::objectDetection($resource->id);
         return response()->json([
             'path' => asset('storage/' . $filePath),
             'name' => $fileName,
