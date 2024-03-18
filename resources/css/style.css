@@ -1,0 +1,286 @@
+
+@font-face {
+    font-family: Inter;
+    src: url(../fonts/Inter-Black.otf);
+}
+@font-face {
+  font-family: Jura;
+  src: url(../fonts/Jura.ttf);
+}
+
+
+
+/*-----------------modal content--------------*/
+.modal-content{
+  border: 2px solid transparent;
+  border-radius: 10px;
+
+  /* Применяем градиент к границе */
+  background: 
+    linear-gradient(#fff 0 0) padding-box, 
+    linear-gradient(to right, #9c20aa, #fb3570) border-box;
+}
+.social{
+  width: 142px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 17px;
+  margin-left: 179px;
+  gap: 11px;
+}
+
+.google{
+width: 40px;
+height: 40px;
+border: none;
+background-color: rgb(255, 255, 255);
+}
+
+.telegram{
+width: 40px;
+height: 40px;
+border: none;
+background-color: rgb(255, 255, 255);
+}
+
+.vkontakte{
+width: 40px;
+height: 40px;
+border: none;
+background-color: rgb(255, 255, 255);
+}
+
+.email{
+width: 356px;
+height: 45px;
+margin-top: 20px;
+margin-left: 72px;
+border: 1px solid rgb(0, 0, 0);
+border-radius: 23px;
+color: rgb(0, 0, 0);
+font-family: Inter M;
+font-size: 18px;
+font-weight: 300;
+line-height: 24px;
+letter-spacing: 0;
+text-align: center;
+}
+
+.login{
+width: 356px;
+height: 45px;
+margin-top: 20px;
+margin-left: 72px;
+border: 1px solid rgb(0, 0, 0);
+border-radius: 23px;
+color: rgb(0, 0, 0);
+font-family: Inter M;
+font-size: 18px;
+font-weight: 300;
+line-height: 24px;
+letter-spacing: 0;
+text-align: center;
+}
+
+.password{
+width: 356px;
+height: 45px;
+margin-top: 20px;
+margin-left: 72px;
+border: 1px solid rgb(0, 0, 0);
+border-radius: 23px;
+color: rgb(0, 0, 0);
+font-family: Inter M;
+font-size: 18px;
+font-weight: 300;
+line-height: 24px;
+letter-spacing: 0;
+text-align: center;
+}
+
+.repit-password{
+width: 356px;
+height: 45px;
+margin-top: 20px;
+margin-left: 72px;
+border: 1px solid rgb(0, 0, 0);
+border-radius: 23px;
+color: rgb(0, 0, 0);
+font-family: Inter M;
+font-size: 18px;
+font-weight: 300;
+line-height: 24px;
+letter-spacing: 0;
+text-align: center;
+}
+
+.vxod{
+box-sizing: border-box;
+border-radius: 22.5px;
+background: rgb(0, 0, 0);
+color: rgb(255, 255, 255);
+font-family: Inter;
+font-size: 20px;
+font-weight: 900;
+line-height: 24px;
+letter-spacing: 0%;
+text-align: center;
+width: 144px;
+height: 45px;
+margin-top: 20px;
+margin-left: 177px;
+}
+
+.gg{
+  height: 100%;
+  width: 100%;
+}
+.tg{
+  height: 100%;
+  width: 100%;
+}
+.vk{
+  height: 100%;
+  width: 100%;
+}
+
+
+
+
+/*-------------------main content--------------*/
+main{
+  background: rgb(41, 41, 41);
+}
+.div-txt{
+  width: 357px;
+  height: 61px;
+  margin-top: 31px;
+  margin-bottom: 12px;
+}
+.txt{
+  font-family: Inter;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 58px;
+  letter-spacing: 0%;
+  text-align: left;
+  background: linear-gradient(to right, rgb(204, 74, 250), rgb(225, 250, 74));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+
+
+
+
+
+
+
+/*------------------slider content-------------*/
+.slider1{
+  position:relative;
+}
+.slider__item{
+  margin-left: 4%;
+}
+.slider1 img{
+  max-width: 100%;
+}
+.slider1 .slider__item{
+  border-radius: 50px;
+}
+.slider3{
+  position:relative;
+}
+.slider3 img{
+  max-width: 100%;
+}
+.slider3 .slider__item{
+  border-radius: 50px;
+}  
+.slick-list{
+  margin-bottom: 30px;
+}
+
+img{
+  width: 90%;
+  height: 30rem;
+}
+
+.slick-arrow{
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  font-size: 0;
+  outline: none;
+  border: none;
+  width: 50px;
+  height: 50px;
+  background-color: aliceblue;
+  opacity: 0.1;
+  transition: all 0.15s;
+  border-radius: 100px;
+
+}
+.slick-arrow:hover{
+  opacity: 0.5;
+}
+
+.slick-next{
+  right: 1%;
+  
+}
+.slick-prev{
+  left: 1%;
+}
+
+.video{
+  width: 90% !important;
+  border-radius: 30px;
+  margin-left: 5%;
+}
+
+
+/* .slick-arrow::before{
+  content: ""; 
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 10%;
+}
+.slick-next::before{
+  background-image: url('../img/arrow.png');
+  right: 5px; 
+}
+.slick-prev::before{
+  background-image: url('../img/arrow.png'); 
+  left: 5px;
+} */
+
+
+
+
+
+
+
+
+
+/*----------------footer content---------------*/
+footer{
+  background: linear-gradient(135.00deg, rgb(204, 74, 250) 0%,rgb(225, 250, 74) 100%); 
+  width: 120rem;
+  height: 9.38rem;
+}
+#footer-txt{
+  font-family: Jura;
+  font-weight: 900;
+  line-height: normal;
+  font-size: 17px;
+  font-style: normal;
+}

@@ -129,7 +129,9 @@ class ResourcesController extends Controller
                 'resource_id' => $resource->id
             ]);
         }
-        PyController::objectDetection($resource->id);
+        if(checkAI($mime)){
+            PyController::objectDetection($resource->id);
+        }
         return response()->json([
             'path' => asset('storage/' . $filePath),
             'name' => $fileName,
@@ -149,6 +151,14 @@ class ResourcesController extends Controller
     $filename = md5(uniqid()) . "." . $extension;
 
         return $filename;
+    }
+
+    protected function checkAI($mimeType){
+        $array = ['image-gif', 'image-jpeg', 'image-png'];
+        if(in_array($mimeType, $array)){
+            return true;
+        }
+        return false;
     }
 
     /**

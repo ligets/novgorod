@@ -1,44 +1,62 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@extends('layouts.main')
 
-    <title>Resumablejs + Laravel Chunk Upload</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.1.0/resumable.min.js"></script>
-    
-</head>
-<body>
-<div class="container pt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-center">
-                    <h5>Upload File</h5>
-                </div>
+@section('title-block')Я ХУЕСОС@endsection
 
-                <div class="card-body">
-                    <div id="upload-container" class="text-center">
-                        <button id="browseFile" class="btn btn-primary">Browse File</button>
-                    </div>
-                    <div style="display: none" class="progress mt-3" style="height: 25px">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; height: 100%">75%</div>
-                    </div>
-                </div>
+@section('style')
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+  @vite('resources/css/reset.css')
+  @vite('resources/css/style.css')
+@endsection
 
-                <div class="card-footer p-4" style="display: none;">
-                    <img id="imagePreview" src="" style="width: 100%; height: auto; display: none;" alt="img"/>
-                    <video id="videoPreview" src="" controls style="width: 100%; height: auto; display: none;"></video>
-                </div>
-            </div>
+@section('content')
+    <main class="col-md-12 overflow-hidden"> 
+      <div class="div-txt ms-4">
+        <span class="txt">ФОТОГРАФИИ</span>
+      </div>
+      <div class="slider1">
+        @foreach($photos as $photo)
+        <div class="item">
+          <img class="slider__item" src="{{ asset('storage/' . $photo->path) }}" alt="#">
         </div>
-    </div>
-</div>
-@vite('resources/js/Resource.js')
-</body>
-</html>
+        @endforeach
+        @if(count($photos) >  9)
+        <div class="item d-flex justify-content-center">
+          <span style="color: #fff;">СМОТРЕТЬ ЕЩЁ</span>
+        </div>
+        @endif
+      </div>
+      <div class="div-txt ms-4">
+        <span class="txt">ВИДЕО</span>
+      </div>
+      <div class="slider2">
+        @foreach($movies as $movie)
+        <video class="video" src="{{ asset('storage/' . $movie->path) }}" controls></video>
+        @endforeach
+        @if(count($movies) >  9)
+        <div class="item d-flex justify-content-center">
+          <span style="color: #fff;">СМОТРЕТЬ ЕЩЁ</span>
+        </div>
+        @endif
+      </div>
+      <div class="div-txt ms-4">
+        <span class="txt">АЛЬБОМЫ</span>
+      </div>
+      <div class="slider3">
+        @foreach($albums as $album)
+        <div class="item">
+          <img class="slider__item" src="{{ asset('storage/' . $album->path) }}">
+        </div>
+        @endforeach
+        @if(count($movies) >  9)
+        <div class="item d-flex justify-content-center">
+          <span style="color: #fff;">СМОТРЕТЬ ЕЩЁ</span>
+        </div>
+        @endif
+      </div>
+    </main> 
+@endsection
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+@vite('resources/js/script.js')
+@endsection

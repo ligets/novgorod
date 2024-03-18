@@ -26,7 +26,6 @@ class LoginController extends Controller
                 'email' => 'Неверный логин или пароль.'
             ]);
         }
-
         // Регенерация сессии
         $req->session()->regenerate();
 

@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Process;
 
+
 use App\Models\Resource;
 use App\Models\ResourceTag;
 use App\Models\Tag;
@@ -62,20 +63,17 @@ class ObjectDetection implements ShouldQueue
     {
         $script_path = 'storage\app\py_scripts\SSD_OD\main.py';
         $image_path = base_path('storage\\app\\public\\' . $this->image_path);
-        $indexes = shell_exec("python {$script_path} {$image_path}");
-        // Tag::create([
-        //     'name' => json_encode($indexes)
-        // ]);
-        preg_match_all('/\d+/', $indexes, $matches);
+        $indexes = new Set(json_decode(shell_exec("python {$script_path} {$image_path}")), true);
+        // preg_match_all('/\d+/', $indexes, $matches);
 
-        // Получаем массив чисел из строки      
-        $numbers = $matches[0];
+        // // Получаем массив чисел из строки      
+        // $numbers = $matches[0];
 
-        // Преобразуем числа из строки в числа
-        $indexes = array_map('intval', $numbers);
-        $count = count($indexes);
+        // // Преобразуем числа из строки в числа
+        // $indexes = array_map('intval', $numbers);
+        
         // Проходим по каждому индексу из $indexes и добавляем соответствующее слово в массив $words
-        foreach ($indexes as $index) {
+        foreach ($indexes->getArray() as $index) {
             // Если индекс есть в словаре, добавляем соответствующее слово в массив $words
             if (isset($this->coco_names[$index])) {
                 $tag = Tag::firstOrCreate([
@@ -84,8 +82,30 @@ class ObjectDetection implements ShouldQueue
                 $this->resource->tags()->attach($tag->id, ['resource_id' => $this->resource->id]);
             }
         }
-        
-        
+    }
+}
 
+namespace App\Jobs;
+class Set{
+    protected $elements = [];
+
+    public function __construct($array = null){
+        foreach ($array as $element) {
+            $this->add($element);
+        }
+    }
+
+    public function add($element) {
+        if (!$this->contains($element)) {
+            $this->elements[] = $element;
+        }
+    }
+
+    public function contains($element) {
+        return in_array($element, $this->elements);
+    }
+
+    public function getArray() {
+        return $this->elements;
     }
 }

@@ -1,0 +1,17 @@
+/*----------------header content-------------*/
+header{
+    background: linear-gradient(135.00deg, rgb(204, 74, 250) 0%,rgb(225, 250, 74) 100%); 
+  }
+  #header-txt{
+    font-family: Jura;
+    font-weight: 900;
+    line-height: normal;
+    letter-spacing: 0%;
+    font-size: 48px;
+    text-align: center;
+    font-style: normal;
+  }
+  #header-btn{
+    border-radius: 44px;
+    font-family: Jura;
+  }
