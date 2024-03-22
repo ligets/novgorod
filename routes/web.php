@@ -88,6 +88,8 @@ Route::middleware(['auth'/*, 'verified'*/])->group(function () {
     Route::get('gallery', 'App\\Http\\Controllers\\GalleryController@get')->name('gallary');
     Route::post('resources/upload', 'App\\Http\\Controllers\\ResourcesController@store')->name('upload.store');
     
-    
+    Route::get('mup', function () {
+        return view('drop');
+    });
     Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
 });

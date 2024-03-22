@@ -1,0 +1,36 @@
+@font-face {
+    font-family: Jura;
+    src: url(../fonts/Jura.ttf);
+}
+#prevImage{
+    max-width: 96%;
+    /* max-height: 600px; */
+    border-radius: 25px;
+}
+video{
+    max-width: 96%;
+    /* max-height: 600px; */
+    border-radius: 25px;
+}
+#uploadForm{
+    border-radius: 25px;
+    padding: 2%;
+}
+#labelInput{
+    height: 35vh;
+    width: 100%;
+    border-radius: 25px;
+    font-size: 5vh;
+    cursor: pointer;
+}
+#uploadForm{
+    background: linear-gradient(180.00deg, rgb(204, 74, 250),rgb(237, 189, 98) 100%);
+    color: rgb(255, 255, 255);
+    font-family: Jura;
+}
+.flex{
+    display: flex;
+}
+#submitBtn, #cancelBtn{
+    border-radius: 15px;
+}

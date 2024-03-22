@@ -2,6 +2,7 @@
 
 @section('style')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+@vite('resources/css/upload.css')
 @vite('resources/css/gallery.css')
 <style>
     body {
@@ -28,10 +29,12 @@ body.loaded {
                 <button id="videosButton" class="me-2 tablinks theme-changeable">Видео</button>
             </div>
             <div class="d-flex justify-content-end col-md-4 mt-3">
+                <button id="upload" class="active tablinks theme-changeable border p-2" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#uploadModal">Добавить</button>
                 <button id="download" class="active tablinks theme-changeable border p-2">Скачать альбом</button>
             </div>
         </div>
     </div>
+    @include('includes.upload')
     <div id="photos" class="tabcontent" style="display: none;">
         <div class="grid theme-changeable">
             <div class="grid-sizer"></div>
@@ -70,10 +73,12 @@ body.loaded {
 
 @section('scripts')
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.1.0/resumable.min.js"></script>
 @vite('resources/js/masonry.pkgd.js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 @vite('resources/js/tabAlbum.js')
 @vite('resources/js/video-gallery.js')
 @vite('resources/js/downloadAlbum.js')
+@vite('resources/js/upload.js')
 @vite('resources/js/gallery.js')
 @endsection

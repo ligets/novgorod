@@ -6,6 +6,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/reset.css',
+                'resources/css/upload.css',
                 'resources/css/scrollbar.css',
                 'resources/css/gallery.css',
                 'resources/css/style.css',
@@ -22,6 +23,7 @@ export default defineConfig({
                 'resources/js/tab.js',
                 'resources/js/video-gallery.js',
                 'resources/js/masonry.pkgd.js',
+                'resources/js/upload.js',
                 'resources/js/masonry.pkgd.min.js',
             ],
             refresh: true,
