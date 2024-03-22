@@ -12,11 +12,13 @@ class MediaController extends Controller
     public function publicMedia(){
         $photos = Resource::where('type_id', 1)
                             ->where('format', 'image')
+                            ->where('in_album', false)
                             ->inRandomOrder()
                             ->limit(10)
                             ->get();
         $movies = Resource::where('type_id', 1)
                             ->where('format', 'video')
+                            ->where('in_album', false)
                             ->inRandomOrder()
                             ->limit(10)
                             ->get();
@@ -28,12 +30,21 @@ class MediaController extends Controller
     }
 
     public static function albumMedia($id){
-        $album_resources = AlbumResource::where('album_id', $id)->get();
-        $resources = [];
-        foreach($album_resources as $resource){
-            $resources[] = $resource->resource_id;
-        }
-        $media = Resource::whereIn('id', $resources)->get();
-        return view('media', compact('media'));
+    //     $album_resources = AlbumResource::where('album_id', $id)->get();
+    //     // return $album_resources->resource;
+    //     $media = [];
+    //     foreach($album_resources as $resource){
+    //         $media[] = $resource->resource;
+    //     }
+    //     return view('media', compact('media'));
+        $albumResources = AlbumResource::where('album_id', $id)
+            ->with('resource') // Загрузка связанных ресурсов
+            ->get()
+            ->groupBy(function ($albumResource) {
+                return $albumResource->resource->format; // Группировка по формату
+            });
+        $images = $albumResources->get('image', collect()); // Получение массива ресурсов изображений
+        $videos = $albumResources->get('video', collect()); // Получение массива ресурсов видео
+        return view('media', compact('images', 'videos'));
     }
 }

@@ -55,7 +55,9 @@ Route::get('email', 'App\Http\Controllers\Auth\EmailVerificateController@send');
 
 Route::get('/', 'App\\Http\\Controllers\\MediaController@publicMedia');
 
-
+Route::get('/upload', function() {
+    return view('upload');
+});
 
 /* Создание группы маршрутов авторизации/регистрации/выхода,
    с проверкой от кого идет запрос(если от гостя то запрос отправляется)
@@ -73,8 +75,8 @@ Route::middleware('guest')->prefix('auth')->group(function () {
 });
 
 Route::get('resources/download/{type}/{id}', 'App\\Http\\Controllers\\ResourcesController@download')->name('download.store');
-
-
+Route::get('public', 'App\\Http\\Controllers\\GalleryController@public')->name('publuc');
+Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
 
 /* Создание группы маршрутов
    которые доступны только авторизованному пользователю */
@@ -82,9 +84,10 @@ Route::middleware(['auth'/*, 'verified'*/])->group(function () {
     Route::get('/profile', function() {
         return view('profile');
     })->name('profile');
-
+    Route::get('/lk', 'App\\Http\\Controllers\\LkController@get')->name('lk');
+    Route::get('gallery', 'App\\Http\\Controllers\\GalleryController@get')->name('gallary');
     Route::post('resources/upload', 'App\\Http\\Controllers\\ResourcesController@store')->name('upload.store');
     
-    Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
+    
     Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
 });

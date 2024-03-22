@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Tag;
 use App\Models\Album;
 use App\Models\Type;
+use App\Models\User;
 
 class Resource extends Model
 {
@@ -14,6 +15,7 @@ class Resource extends Model
 
     protected $fillable = [
         'user_id',
+        'title',
         'path',
         'format',
         'in_album',
@@ -30,5 +32,8 @@ class Resource extends Model
 
     public function type() {
         return $this->belongsTo(Type::class);
+    }
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

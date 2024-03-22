@@ -6,3 +6,25 @@
 body{
     overflow-x: hidden;
 }
+body {
+    display: none!important;
+    flex-direction: column!important;
+    min-height: 100vh!important; /* Минимальная высота страницы */
+}
+  body.loaded {
+    display: flex!important;
+  }
+
+header {
+    flex: 0 0 auto!important; /* Фиксированный размер хидера */
+    /* Дополнительные стили хидера */
+}
+
+main {
+    flex: 1 0 auto!important; /* Автоматически расширяемый контент */
+    /* Дополнительные стили контента */
+}
+footer {
+    flex: 0 0 auto!important; /* Фиксированный размер футера */
+    /* Дополнительные стили футера */
+}

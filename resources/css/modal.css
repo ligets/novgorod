@@ -1,0 +1,141 @@
+@font-face {
+  font-family: Inter;
+  src: url(../fonts/Inter-Black.otf);
+}
+@font-face {
+  font-family: Inter M;
+  src: url(../fonts/Inter-Light.otf);
+}
+@font-face {
+  font-family: Jura;
+  src: url(../fonts/Jura.ttf);
+}
+
+.modal-content {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(to right, #9c20aa, #fb3570) border-box;
+}
+.modal-header {
+  border: none;
+}
+
+.topic {
+  color: rgb(0, 0, 0);
+  font-family: Jura;
+  font-size: 200%;
+  font-weight: 900;
+  text-align: center;
+}
+
+/*--------------alternative entrance---------*/
+.social {
+  width: 31%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 11%;
+  margin-top: 2%;
+}
+
+.google {
+  border: none;
+  background-color: rgb(255, 255, 255);
+}
+.gg {
+  height: 100%;
+  width: 100%;
+}
+
+.telegram {
+  border: none;
+  background-color: rgb(255, 255, 255);
+}
+.tg {
+  height: 100%;
+  width: 100%;
+}
+
+.vkontakte {
+  border: none;
+  background-color: rgb(255, 255, 255);
+}
+.vk {
+  height: 100%;
+  width: 100%;
+}
+
+/*------------------input info-------------*/
+.container {
+  height: 100%;
+}
+.input {
+  width: 100%;
+  height: 100%;
+}
+
+.email {
+  width: 70%;
+  height: 4vh;
+  margin-top: 6%;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 23px;
+  font-family: Inter M;
+  font-size: 130%;
+  font-weight: 300;
+}
+.login {
+  width: 70%;
+  height: 4vh;
+  margin-top: 2%;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 23px;
+  font-family: Inter M;
+  font-size: 130%;
+  font-weight: 300;
+}
+.password {
+  width: 70%;
+  height: 4vh;
+  margin-top: 2%;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 23px;
+  font-family: Inter M;
+  font-size: 130%;
+  font-weight: 300;
+}
+.repit-password {
+  width: 70%;
+  height: 4vh;
+  margin-top: 2%;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 23px;
+  font-family: Inter M;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/*------------------buttons-------------*/
+.log-in {
+  border-radius: 22.5px;
+  background: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  font-family: Jura;
+  font-size: 130%;
+  text-align: center;
+  width: 25%;
+  height: 4vh;
+  margin-top: 6%;
+}
+.register {
+  border-radius: 22.5px;
+  background: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  font-family: Jura;
+  font-size: 130%;
+  text-align: center;
+  width: 32%;
+  height: 4vh;
+  margin-top: 6%;
+}

@@ -59,6 +59,8 @@ $(document).ready(function(){
   $('.slider2').slick({
     infinite: false,
     lazyLoad: 'ondemand',
+    prevArrow: '<button id="prev-sl-2" type="button" class="slick-prev">Prev</button>',
+    nextArrow: '<button id="next-sl-2" type="button" class="slick-next">Next</button>',
     responsive: [
       {
         breakpoint: 1920,
@@ -116,6 +118,8 @@ $(document).ready(function(){
   $('.slider3').slick({
     infinite: false,
     lazyLoad: 'ondemand',
+    prevArrow: '<button id="prev-sl-3" type="button" class="slick-prev">Prev</button>',
+    nextArrow: '<button id="next-sl-3" type="button" class="slick-next">Next</button>',
     responsive: [
       {
         breakpoint: 1920,
@@ -168,3 +172,4 @@ $(document).ready(function(){
     ]
   });
 });
+

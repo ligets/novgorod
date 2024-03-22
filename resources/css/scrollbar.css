@@ -1,0 +1,26 @@
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(125, 125, 125);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom: 1px solid rgb(125, 125, 125);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    135deg,
+    rgb(237, 189, 98) 0%,
+    rgb(121, 13, 167) 50%,
+    rgb(237, 189, 98) 100%
+  );
+  border-radius: 20px;
+  border: 1px solid rgb(0, 0, 0);
+}

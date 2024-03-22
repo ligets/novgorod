@@ -5,6 +5,7 @@ let browseFile = $('#browseFile');
             _token: $('meta[name="csrf-token"]').attr('content'),
             type: '1',
             tags: 'Ex1, Ex2, Ex3',
+            title: "Это название ресурса"
             // in_album: '1'
         },
         fileType: [

@@ -10,6 +10,7 @@ use App\Models\AlbumResource;
 use App\Models\Album;
 use App\Models\UserAlbum;
 use App\Models\Tag;
+use App\Http\Controllers\PyController;
 // use Illuminate\Support\Facades\Storage;
 // use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
@@ -53,7 +54,7 @@ class ResourcesController extends Controller
             $tags = explode(', ', $request->tags);
             // save the file and return any response you need, current example uses `move` function. If you are
             // not using move, you need to manually delete the file by unlink($save->getFile()->getPathname())
-            return $this->saveFile($save->getFile(), $in_album, $type, $tags);
+            return $this->saveFile($save->getFile(), $in_album, $type, $tags, $request->title);
         }
 
         // we are in chunk mode, lets send the current progress
@@ -76,7 +77,7 @@ class ResourcesController extends Controller
      *
      * @return JsonResponse
      */
-    protected function saveFile(UploadedFile $file, $in_album, $type, $tags)
+    protected function saveFile(UploadedFile $file, $in_album, $type, $tags, $title)
     {
         $validator = Validator::make(
             ['file' => $file],
@@ -106,9 +107,10 @@ class ResourcesController extends Controller
         $file->move($finalPath, $fileName);
 
         $fileFormat = $this->detectFileFormat($file);
-
+        
         $resource = Resource::create([
             'user_id' => Auth::user()->id,
+            'title' => $title,
             'path' => $filePath . '/' . $fileName,
             'format' => $fileFormat,
             'in_album' => $in_album ? true : false,
@@ -129,7 +131,7 @@ class ResourcesController extends Controller
                 'resource_id' => $resource->id
             ]);
         }
-        if(checkAI($mime)){
+        if($this->checkAI($mime)){
             PyController::objectDetection($resource->id);
         }
         return response()->json([
@@ -257,7 +259,6 @@ class ResourcesController extends Controller
         }
 
         $zip->close();
-
         return response()->download($zipFileName)->deleteFileAfterSend(true);
     }
 

@@ -7,7 +7,6 @@
   src: url(../fonts/Jura.ttf);
 }
 
-/*-------------------main content--------------*/
 main {
   transition: background-color 0.5s ease;
 }
@@ -17,39 +16,68 @@ main {
 .main-content.dark {
   background: rgb(50, 50, 50);
 }
-.txt {
-  font-family: Inter;
-  font-size: 48px;
-  font-weight: 900;
-  line-height: 58px;
-  letter-spacing: 0%;
-  text-align: left;
-  color: transparent;
-  transition: background 0.5s ease;
-  background-size: 200% 200%;
-  background-image: linear-gradient(
-    135deg,
-    rgb(121, 13, 167) 0%,
-    rgb(237, 189, 98) 100%
-  );
+.tabs {
+  margin-top: 1%;
+  gap: 3%;
 }
-.dark.txt {
-  background-position: 0%;
-  -webkit-background-clip: text;
+.tablinks {
+  border: none;
+  background-color: transparent;
+  font-family: Jura;
+  font-size: 30px;
+  transition: color 0.5s ease;
 }
-.light.txt {
-  background-position: 100%;
-  -webkit-background-clip: text;
+.dark.tablinks {
+  color: rgb(250, 234, 210);
+}
+.light.tablinks {
+  color: rgb(50, 50, 50);
+}
+
+.grid {
+  margin-top: 1%;
+  margin-left: 6%;
+  margin-right: 6%;
+  transition: background-color 0.5s ease;
+}
+.light.grid {
+  background: rgb(250, 234, 210);
+}
+.dark.grid {
+  background: rgb(50, 50, 50);
+}
+
+.grid-sizer,
+.grid-item {
+  width: 19.3%; /* Это не установит равные колонки, а только изменит ширину элементов */
+}
+
+.grid-item {
+  float: left;
+  margin-bottom: 0.5%; /* Добавим отступ между элементами сетки */
+}
+
+.grid-item img {
+  display: block;
+  max-width: 100%;
+  height: auto; /* Для корректного отображения изображений */
 }
 
 /*----------------video content--------------*/
+#videos {
+  margin-top: 1%;
+}
+.video-item {
+  margin-top: 2%;
+  width: 21%;
+}
 .video-preview-container {
   position: relative;
   cursor: pointer;
   left: 5%;
 }
 .video {
-  display: none;
+  display: none !important;
   width: 90% !important;
   height: auto;
   top: 0;
@@ -58,11 +86,10 @@ main {
 .video-preview {
   width: 90%;
   height: auto;
-  border-radius: 25px;
+  border-radius: 5px;
 }
 .video-info {
   margin-top: 10px;
-  width: 90%
 }
 
 .video-info img {
@@ -70,6 +97,7 @@ main {
   height: 1%;
   border-radius: 50%;
   margin-right: 3%;
+  margin-top: 4%;
 }
 
 .author-name {
@@ -102,7 +130,7 @@ main {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   width: 90%;
-  color: aliceblue;
+  color: rgb(250, 234, 210);
 }
 .light.video-description {
   font-family: Jura;
@@ -120,7 +148,6 @@ main {
 
 /*----------------album content--------------*/
 .album-info {
-  width: 90%;
   margin-top: 2%;
   margin-left: 5%;
 }
@@ -129,6 +156,7 @@ main {
   height: 1%;
   border-radius: 50%;
   margin-right: 2%;
+  margin-top: 2%;
 }
 
 .album-description {
@@ -147,6 +175,7 @@ main {
   width: 100%;
   font-weight: bold;
   color: rgb(250, 234, 210);
+  margin-right: 8%;
 }
 .light.album-description {
   font-family: Jura;
@@ -178,97 +207,18 @@ main {
   font-weight: bold;
   font-family: Jura;
   color: aliceblue;
+  margin-right: 20%;
 }
 
-/*------------------slider content-------------*/
-.slider1 {
-  position: relative;
+.item-album {
+  width: 15%;
+  margin-right: 2%;
+  margin-top: 1%;
 }
-.slider__item {
-  margin-left: 4%;
-}
-.slider1 img {
-  max-width: 100%;
-}
-.slider1 .slider__item {
+.img-album {
   border-radius: 25px;
 }
-.slider3 {
-  position: relative;
-}
-.slider3 img {
-  max-width: 100%;
-}
-.slider3 .slider__item {
-  border-radius: 25px;
-}
-.slick-list {
-  margin-bottom: 30px;
-}
 
-img {
-  width: 90%;
-  height: 30rem;
-}
-
-.slick-arrow {
-  font-size: 0;
-  line-height: 0;
-  border: none;
-  background: transparent;
-  outline: none;
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 42%;
-  opacity: 0.5;
-  transition: opacity 0.15s;
-  border-radius: 50%;
-  z-index: 3;
-}
-
-.slick-arrow:hover {
-  opacity: 1;
-}
-
-.slick-next {
-  right: 1.2%;
-}
-
-.slick-prev {
-  left: 1%;
-}
-
-.slick-arrow::before {
-  content: "";
-  width: 80px;
-  height: 80px;
-  background-image: url('/public/storage/img/site/arrow4.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.slick-next::before {
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-.slick-prev::before {
-  transform: translate(-50%, -50%) rotate(180deg);
-}
-
-#prev-sl-2 {
-  margin-top: -1.7%;
-}
-#next-sl-2 {
-  margin-top: -1.7%;
-}
-#prev-sl-3 {
-  margin-top: -1.1%;
-}
-#next-sl-3 {
-  margin-top: -1.1%;
+#albums {
+  margin-top: 2%;
 }

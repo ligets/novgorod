@@ -15,6 +15,8 @@ return new class extends Migration
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('title', 64)->nullable();
+            $table->string('pathPreview')->nullable()->index();
             $table->string('path');
             $table->string('format', 15);
             $table->string('metadata', 255)->nullable();

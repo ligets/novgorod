@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title', 20);
             $table->string('description', 255);
+            $table->string('pathPreview', 255)->default('img/preview/album/default.png')->index();
             $table->unsignedBigInteger('type_id');
             $table->timestamps();
-
             $table->foreign('type_id')->references('id')->on('types');
         });
     }
