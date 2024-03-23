@@ -53,7 +53,7 @@ Route::get('time', function () {
 
 Route::get('email', 'App\Http\Controllers\Auth\EmailVerificateController@send');
 
-Route::get('/', 'App\\Http\\Controllers\\MediaController@publicMedia');
+Route::get('/', 'App\\Http\\Controllers\\MediaController@publicMedia')->name('home');
 
 Route::get('/upload', function() {
     return view('upload');
@@ -75,7 +75,7 @@ Route::middleware('guest')->prefix('auth')->group(function () {
 });
 
 Route::get('resources/download/{type}/{id}', 'App\\Http\\Controllers\\ResourcesController@download')->name('download.store');
-Route::get('public', 'App\\Http\\Controllers\\GalleryController@public')->name('publuc');
+Route::get('public', 'App\\Http\\Controllers\\GalleryController@public')->name('public');
 Route::get('albums/{id}', 'App\\Http\\Controllers\\AlbumsController@get');
 
 /* Создание группы маршрутов
@@ -87,9 +87,13 @@ Route::middleware(['auth'/*, 'verified'*/])->group(function () {
     Route::get('/lk', 'App\\Http\\Controllers\\LkController@get')->name('lk');
     Route::get('gallery', 'App\\Http\\Controllers\\GalleryController@get')->name('gallary');
     Route::post('resources/upload', 'App\\Http\\Controllers\\ResourcesController@store')->name('upload.store');
-    
+    Route::get('ex', function(){
+        return view('red');
+    });
     Route::get('mup', function () {
         return view('drop');
     });
+    Route::post('edit-album', 'App\\Http\\Controllers\\AlbumsController@edit');
+    Route::post('create-album', 'App\\Http\\Controllers\\AlbumsController@create');
     Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
 });

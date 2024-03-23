@@ -17,6 +17,7 @@ class AlbumsController extends Controller {
         $req->validate([
             'title' => 'required|string|max:20',
             'description' => 'string| max:255',
+            'access' => 'required'
         ], [
             'title.required' => 'Поле названия обязательно для заполнения.',
             'title.string' => 'Поле названия должно быть строкой.',
@@ -30,24 +31,66 @@ class AlbumsController extends Controller {
         $album = Album::create([
             'title' => $req->title,
             'description' => $req->description,
-            'type_id' => $type_id,
+            'type_id' => $req->access,
         ]);
         UserAlbum::create([
             'user_id' => $id,
             'album_id' => $album->id,
             'role' => 'owner'
         ]);
+        return redirect('albums/' . $album->id);
     }
 
-    public function edit_authors(Request $req, $id){
-        // $authors = $req->authors;
-        $authors = [2, 3];
-        UserAlbum::whereNotIn('user_id', $authors)
-            ->where('role', 'author')
-            ->where('album_id', $id)
-            ->delete();
+    public function edit(Request $req){
+        // return $req->all();
+        $req->validate([
+            'title' => 'required|string|max:20',
+            'description' => 'string| max:255',
+            'access' => 'required'
+        ], [
+            'title.required' => 'Поле названия обязательно для заполнения.',
+            'title.string' => 'Поле названия должно быть строкой.',
+            'title.max' => 'Поле названия не должно превышать :max символов.',
 
-        $existingAuthors = UserAlbum::where('role', 'author')
+            'description.string' => 'Поле описания должно быть строкой.',
+            'description.max' => 'Поле описания не должно превышать :max символов.'
+        ]);
+        $album = Album::where('id', $req->id)->first();
+        $album->title = $req->title; // Обновление атрибутов модели
+        $album->description = $req->description;
+        $album->type_id = $req->access;
+
+        $album->save();
+        if($req->type_id == 2){
+            $this->edit_authors($req->authors, $req->id);
+        }
+        else{
+            $this->delete_authors($req->id);
+        }
+        return redirect('albums/' . $req->id);
+
+    }
+
+    protected function delete_authors($id){
+        UserAlbum::where('role', 'user')
+                ->where('album_id', $id)
+                ->delete();
+    }
+
+    protected function edit_authors($authors, $id){
+        // return $authors;
+        if(empty($authors)){
+            $this->delete_authors($id);
+            return true;
+        }
+        else{
+            UserAlbum::whereNotIn('user_id', $authors)
+                ->where('role', 'user')
+                ->where('album_id', $id)
+                ->delete();
+        }
+
+        $existingAuthors = UserAlbum::where('role', 'user')
             ->where('album_id', $id)
             ->pluck('user_id') // Получаем массив всех идентификаторов авторов альбома
             ->toArray();
@@ -63,7 +106,7 @@ class AlbumsController extends Controller {
             $dataToInsert[] = [
                 'user_id' => $authorId,
                 'album_id' => $id,
-                'role' => 'author',
+                'role' => 'user',
                 'created_at' => $time, // Предположим, что нужно указать временные метки
                 'updated_at' => $time
             ];

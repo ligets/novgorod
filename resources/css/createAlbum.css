@@ -1,0 +1,44 @@
+@font-face {
+    font-family: Jura;
+    src: url(../fonts/Jura.ttf);
+  }
+  #dropArea {
+      border: 2px dashed #fb3570;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+  }
+  #dropArea.hover {
+      border-color: #000;
+  }
+  #alb{
+  font-family: Jura;
+  font-weight: 900;
+  line-height: normal;
+  font-size: 15px;
+  text-align: center;
+  font-style: normal;
+  width: 8%;
+  margin-top: auto;
+}
+body {
+  font-family: Jura;
+}
+
+.modal-content {
+border: 2px solid transparent;
+border-radius: 10px;
+background: linear-gradient(#fff 0 0) padding-box,
+  linear-gradient(to right, #9c20aa, #fb3570) border-box;
+}
+.btn-pink {
+      background-color: pink;
+      border-color: pink;
+      color: white;
+  }
+
+  .btn-pink:hover {
+      background-color: #ff69b4;
+      border-color: #ff69b4;
+      color: white;
+  }

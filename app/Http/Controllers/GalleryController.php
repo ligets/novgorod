@@ -21,7 +21,6 @@ class GalleryController extends Controller
         
         $images = $resources->get('image', collect());
         $videos = $resources->get('video', collect());
-        
         $albums = Auth::user()->albums;
         return view('gallery', compact('images', 'videos', 'albums'));
     }
@@ -36,6 +35,6 @@ class GalleryController extends Controller
 
         $albums = Album::where('type_id', 1)->get();
 
-        return view('gallery', compact('images', 'videos', 'albums'));
+        return view('public', compact('images', 'videos', 'albums'));
     }
 }

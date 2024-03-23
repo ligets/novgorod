@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/reset.css',
                 'resources/css/upload.css',
                 'resources/css/scrollbar.css',
+                'resources/css/createAlbum.css',
                 'resources/css/gallery.css',
                 'resources/css/style.css',
                 'resources/css/header.css',

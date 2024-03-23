@@ -31,7 +31,6 @@
   font-size: 48px;
   text-align: center;
   font-style: normal;
-  width: 12%;
 }
 #gallery-txt {
   font-family: Jura;
@@ -74,9 +73,6 @@
 }
 
 /*----------------- search form -------------*/
-.input-group {
-  width: 40% !important;
-}
 .dark.form-control,
 .light.form-control {
   transition: background-color 0.5s ease, border-color 0.5s ease;

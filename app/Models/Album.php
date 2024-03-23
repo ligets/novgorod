@@ -12,6 +12,11 @@ class Album extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'type_id',
+    ];
 
     public function type() {
         return $this->belongsTo(Type::class, 'type_id');

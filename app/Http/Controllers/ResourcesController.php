@@ -66,8 +66,8 @@ class ResourcesController extends Controller
         ]);
     }
 
-    protected function runPy(){
-        
+    public function delete(Request $req){
+
     }
 
     /**
@@ -149,8 +149,8 @@ class ResourcesController extends Controller
     protected function createFilename(UploadedFile $file)
     {
         $extension = $file->getClientOriginalExtension();
-    // Генерируем уникальное имя файла без использования оригинального имени
-    $filename = md5(uniqid()) . "." . $extension;
+        // Генерируем уникальное имя файла без использования оригинального имени
+        $filename = md5(uniqid()) . "." . $extension;
 
         return $filename;
     }
@@ -223,7 +223,7 @@ class ResourcesController extends Controller
 
     protected function downloadAlbum($id){
         $album = Album::findOrFail($id);
-        $type = $album->type()->first()->name;
+        $type = $album->type->name;
 
         switch($type){
             case 'public':
@@ -257,9 +257,16 @@ class ResourcesController extends Controller
                 $zip->addFile($filePath, $relativePath);
             }
         }
-
+        $zipFileName = $zip->filename;
+        // return $zipFileName;
         $zip->close();
-        return response()->download($zipFileName)->deleteFileAfterSend(true);
+        if (file_exists($zipFileName)) {
+            // Возвращаем архив для скачивания
+            return response()->download($zipFileName)->deleteFileAfterSend(true);
+        } else {
+            // Если архив не был создан, возвращаем сообщение об ошибке
+            return response()->json(['message' => 'Альбом пуст'], 500);
+        }
     }
 
     protected function private($album){

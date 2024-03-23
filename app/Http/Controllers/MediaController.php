@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Resource;
 use App\Models\AlbumResource;
+use App\Models\UserAlbum;
 use App\Models\Album;
 
 class MediaController extends Controller
@@ -37,6 +38,8 @@ class MediaController extends Controller
     //         $media[] = $resource->resource;
     //     }
     //     return view('media', compact('media'));
+        $album = Album::where('id', $id)->first();
+        $authors = UserAlbum::where('album_id', $id)->whereNot('role', 'owner')->get();
         $albumResources = AlbumResource::where('album_id', $id)
             ->with('resource') // Загрузка связанных ресурсов
             ->get()
@@ -45,6 +48,6 @@ class MediaController extends Controller
             });
         $images = $albumResources->get('image', collect()); // Получение массива ресурсов изображений
         $videos = $albumResources->get('video', collect()); // Получение массива ресурсов видео
-        return view('media', compact('images', 'videos'));
+        return view('media', compact('images', 'videos', 'album', 'authors'));
     }
 }

@@ -20,6 +20,9 @@ main {
   margin-top: 1%;
   gap: 3%;
 }
+.active{
+  color: #fff!important;
+}
 .tablinks {
   border: none;
   background-color: transparent;

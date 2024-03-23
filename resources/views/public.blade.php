@@ -29,11 +29,10 @@
             </ul>
             <div class="d-flex justify-content-end col-md-4 mt-3">
                 <button id="upload" class="active tablinks theme-changeable border p-2" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#uploadModal">Добавить</button>
-                
+                <button id="download" class="active tablinks theme-changeable border p-2">Скачать альбом</button>
             </div>
         </div>
     </div>
-    @include('includes.upload')
     <div id="photos" class="tabcontent" style="display: none;">
         <div class="grid theme-changeable">
             <div class="grid-sizer"></div>

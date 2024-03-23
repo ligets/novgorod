@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,8 +12,8 @@ class RegistrController extends Controller {
     public function registr(Request $req) {
         // Валидация приходящих данных
         $req->validate([
-            'login' => 'required|unique:user|string|min:5|max:255',
-            'email' => 'required|unique:user|email|max:255',
+            'login' => 'required|unique:users|string|min:5|max:255',
+            'email' => 'required|unique:users|email|max:255',
             'password' => 'required|confirmed|min:8|max:255'
         ], [ // Сообщения ошибки валидации
             'login.required' => 'Поле логина обязательно для заполнения.',
@@ -33,16 +34,18 @@ class RegistrController extends Controller {
         ]);
 
         // Создание нового пользователя в БД
+        // return $req->login;
         $user = User::create([
             'login' => $req->login,
             'email' => $req->email,
-            'password' => Hash::make($req->password) // Создание хэшированого пароля
+            'password' => Hash::make($req->password), // Создание хэшированого пароля
+            'role_id' => 2
         ]);
 
         // Авторизовывем пользователя
         Auth::login($user);
 
         //Перенапровление на страницу профиля
-        return redirect(route('profile'));
+        return redirect(route('lk'));
     }
 }
