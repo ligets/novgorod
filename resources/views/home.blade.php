@@ -20,7 +20,7 @@
             <img class="slider__item" src="{{ asset('storage/' . $photo->path) }}" alt="#">
           </a>
           <div class="video-info d-flex flex-row justify-content-center">
-            <img src="{{ asset('storage/' . $photo->user->pathIco) }}" alt="User Icon">
+            <img data-id="{{ $photo->id }}" src="{{ asset('storage/' . $photo->user->pathIco) }}" alt="User Icon">
             <div class="video-author d-flex flex-column">
                 <span class="author-name theme-changeable">{{ '@' . $photo->user->login }}</span>
             </div>
@@ -41,10 +41,10 @@
         <div class="video-preview-container">
           <a data-fancybox="gallery" data-caption="{{ $movie->title }}" href="{{ asset('storage/' . $movie->path) }}">
             <img class="video-preview" alt="Video Preview">
-            <video class="video" src="{{ asset('storage/' . $movie->path) }}" controls></video>
+            <video data-id="{{ $movie->id }}" class="video" src="{{ asset('storage/' . $movie->path) }}" controls></video>
           </a>
           <div class="video-info d-flex flex-row justify-content-center">
-            <img src="{{ asset('storage/' . $photo->user->pathIco) }}" alt="User Icon">
+            <img src="{{ asset('storage/' . $movie->user->pathIco) }}" alt="User Icon">
             <div class="video-author d-flex flex-column">
                 <span class="author-name theme-changeable">{{ '@' . $movie->user()->first()->login }}</span>
                 <div class="video-description theme-changeable">

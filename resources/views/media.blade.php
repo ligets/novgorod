@@ -41,13 +41,17 @@ body.loaded {
             <div class="d-flex justify-content-end col-md-4 mt-3">
                 <button id="upload" class="active tablinks theme-changeable border p-2" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#uploadModal">Добавить</button>
                 <button id="download" class="active tablinks theme-changeable border p-2">Скачать альбом</button>
+                @if($role == 'owner')
                 <button id="edit" class="active tablinks theme-changeable p-2" data-bs-toggle="modal" data-bs-target="#editAlbum">
                     <img src="{{ asset('storage/img/site/pen.svg') }}">
                 </button>
+                @endif
             </div>
         </div>
     </div>
-    @include('includes.editAlbum')
+    @if($role == 'owner')
+        @include('includes.editAlbum')
+    @endif
     @include('includes.upload')
     <div id="photos" class="tabcontent" style="display: none;">
         <div class="grid theme-changeable">
@@ -55,8 +59,8 @@ body.loaded {
             <div class="gutter-sizer"></div>
             @foreach($images as $image)
             <div class="grid-item">
-                <a data-caption="{{ $image->title }}" href="{{ '/storage/' . $image->resource->path }}" data-fancybox="gallery">
-                    <img src="{{ asset('storage/' . $image->resource->path) }}">
+                <a data-caption="{{ $image->resource->title }}" href="{{ '/storage/' . $image->resource->path }}" data-fancybox="gallery">
+                    <img data-id="{{ $image->resource->id }}" src="{{ asset('storage/' . $image->resource->path) }}">
                 </a>
             </div>
             @endforeach
@@ -69,7 +73,7 @@ body.loaded {
                 <div class="video-preview-container">
                     <a data-fancybox="video" data-caption="{{ $video->resource->title }}" href="{{ '/storage/' . $video->resource->path }}">
                         <img class="video-preview" alt="Video Preview">
-                        <video class="video" src="{{ asset('storage/' . $video->resource->path) }}" controls></video>
+                        <video data-id="{{ $video->resource->id }}" class="video" src="{{ asset('storage/' . $video->resource->path) }}" controls></video>
                     </a>
                     <div class="video-info d-flex flex-row">
                     <img src="{{ asset('storage/' . $video->user->pathIco) }}" alt="User Icon">

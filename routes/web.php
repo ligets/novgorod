@@ -97,3 +97,8 @@ Route::middleware(['auth'/*, 'verified'*/])->group(function () {
     Route::post('create-album', 'App\\Http\\Controllers\\AlbumsController@create');
     Route::get('albums/{id}/edit', 'App\\Http\\Controllers\\AlbumsController@edit_authors');
 });
+
+Route::get('meta', function(){
+    $path = 'upload/video-mp4/2024-03-12/1c165d1c895e2f21e8c32b6aed89cf71.mp4';
+    return Storage::disk('public')->get($path);
+});

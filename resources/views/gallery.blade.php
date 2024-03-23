@@ -41,7 +41,7 @@
             @foreach($images as $image)
             <div class="grid-item">
                 <a data-caption="{{ $image->title }}" href="{{ './storage/' . $image->path }}" data-fancybox="gallery">
-                    <img data-path src="{{ asset('storage/' . $image->path) }}">
+                    <img data-id="{{ $image->id }}" src="{{ asset('storage/' . $image->path) }}">
                 </a>
             </div>
             @endforeach
@@ -54,7 +54,7 @@
                 <div class="video-preview-container">
                     <a data-fancybox="video" data-caption="{{ $video->title }}" href="{{ './storage/' . $video->path }}">
                         <img class="video-preview" alt="Video Preview">
-                        <video class="video" data-path="{{ $video->path }}" src="{{ asset('storage/' . $video->path) }}" controls></video>
+                        <video data-id="{{ $video->id }}" class="video" data-path="{{ $video->path }}" src="{{ asset('storage/' . $video->path) }}" controls></video>
                     </a>
                     <div class="video-info d-flex flex-row">
                     <img src="{{ asset('storage/' . $video->user->pathIco) }}" alt="User Icon">

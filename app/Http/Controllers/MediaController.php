@@ -7,6 +7,7 @@ use App\Models\Resource;
 use App\Models\AlbumResource;
 use App\Models\UserAlbum;
 use App\Models\Album;
+use Illuminate\Support\Facades\Auth;
 
 class MediaController extends Controller
 {
@@ -46,8 +47,9 @@ class MediaController extends Controller
             ->groupBy(function ($albumResource) {
                 return $albumResource->resource->format; // Группировка по формату
             });
+        $role = UserAlbum::where('user_id', Auth::user()->id)->where('album_id', $id)->first()->role;
         $images = $albumResources->get('image', collect()); // Получение массива ресурсов изображений
         $videos = $albumResources->get('video', collect()); // Получение массива ресурсов видео
-        return view('media', compact('images', 'videos', 'album', 'authors'));
+        return view('media', compact('images', 'videos', 'album', 'authors', 'role'));
     }
 }

@@ -19,11 +19,12 @@ return new class extends Migration
             $table->string('pathPreview')->nullable()->index();
             $table->string('path');
             $table->string('format', 15);
-            $table->string('metadata', 255)->nullable();
+            $table->unsignedBigInteger('metadata_id')->nullable();
             $table->boolean('in_album')->default(false);
             $table->unsignedBigInteger('type_id');
             $table->timestamps();
 
+            $table->foreign('metadata_id')->references('id')->on('metadata')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
         });

@@ -10,6 +10,7 @@ use App\Models\AlbumResource;
 use App\Models\Album;
 use App\Models\UserAlbum;
 use App\Models\Tag;
+use App\Models\Metadata;
 use App\Http\Controllers\PyController;
 // use Illuminate\Support\Facades\Storage;
 // use Illuminate\Support\Facades\Log;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Http;
 
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -108,6 +110,47 @@ class ResourcesController extends Controller
 
         $fileFormat = $this->detectFileFormat($file);
         
+        $fullPath = Storage::disk('public')->path($filePath . '/' . $fileName);
+        $file = new \Illuminate\Http\UploadedFile($fullPath, $fileName);
+
+        if ($file && $file->getMimeType() === 'image/jpeg') {
+            // Читаем данные EXIF из изображения
+            $exifData = exif_read_data($file->getPathname());
+
+            // Проверяем, есть ли данные GPS
+            if (isset($exifData['GPSLatitude']) && isset($exifData['GPSLongitude'])) {
+                // Сохраняем фото в базу данных
+
+                $latitude = $this->convertToDegrees($exifData['GPSLatitude']);
+                $longitude = $this->convertToDegrees($exifData['GPSLongitude']);
+
+                $address = $this->reverseGeocode($latitude, $longitude);
+                $city = $address['city'] ?? null;
+                $road = $address['road'] ?? null;
+                $house_number = $address['house_number'] ?? null;
+                $full_adr = $road . ' ' . $house_number;
+
+                // Сохраняем метаданные в базу данных
+                $metadata = new Metadata();
+                $metadata->device_name = $exifData['Make'] ?? null;
+                $metadata->gps_latitude = $latitude;
+                $metadata->gps_longitude = $longitude;
+                $metadata->city = $city;
+                $metadata->road = $full_adr;
+                $metadata->save();
+
+                // Выводим HTML с картой и ссылкой
+                return view('map', compact('latitude', 'longitude'));
+            }
+            
+        }
+        else{
+            abort(444, 'ГЫ');
+        }
+
+
+
+
         $resource = Resource::create([
             'user_id' => Auth::user()->id,
             'title' => $title,
@@ -131,6 +174,7 @@ class ResourcesController extends Controller
                 'resource_id' => $resource->id
             ]);
         }
+
         if($this->checkAI($mime)){
             PyController::objectDetection($resource->id);
         }
@@ -139,6 +183,16 @@ class ResourcesController extends Controller
             'name' => $fileName,
             'mime_type' => $mime
         ]);
+    }
+
+    public function getMetadata($filePath)
+    {
+        // Получаем загруженный файл
+        $file = Storage::disk('public')->get($path);
+
+        // Проверяем, что файл существует и является изображением JPEG
+        
+        abort(4404040, 'MAMA I GAY');
     }
 
     /**
@@ -289,5 +343,40 @@ class ResourcesController extends Controller
         if($resource->user_id !== Auth::user()->id){
             abort(403, 'Доступ запрещён');
         }
+    }
+
+
+
+    protected function convertToDegrees($coordinates) {
+        $degrees = (double) $coordinates[0];
+        $minutes = isset($coordinates[1]) ? (double) $coordinates[1] : 0;
+        $seconds_numerator = isset($coordinates[2]) ? (double) $coordinates[2] : 0;
+
+        // Проверяем, является ли числитель числом
+        if (is_numeric($seconds_numerator)) {
+            // Если третий элемент массива представлен в виде числитель/знаменатель, вычисляем значение секунд
+            if (strpos($seconds_numerator, '/') !== false) {
+                list($numerator, $denominator) = explode('/', $seconds_numerator);
+                $seconds = $numerator / $denominator;
+            } else {
+                $seconds = $seconds_numerator;
+            }
+        } else {
+            // Если значение не числовое, устанавливаем секунды как 0
+            $seconds = 0;
+        }
+
+        $resigned = $degrees + $minutes / 60 + $seconds / 3600 /1000000;
+        return $resigned;
+    }
+
+    public function reverseGeocode($latitude, $longitude)
+    {
+        $url = "https://nominatim.openstreetmap.org/reverse?lat=$latitude&lon=$longitude&format=json&zoom=18&addressdetails=1";
+        $response = Http::get($url);
+        $data = $response->json();
+        // Получите адрес из ответа и верните его
+        $address = $data['address'] ?? null;
+        return $address;
     }
 }
