@@ -16,25 +16,25 @@ $grid.imagesLoaded().progress(function () {
   $grid.masonry();
 });
 
-$("[data-fancybox='video']").fancybox({
-  type: "video",
-  buttons: [
-    'download',
-    'close'
-  ]
-});
+// $("[data-fancybox='video']").fancybox({
+//   type: "video",
+//   buttons: [
+//     'download',
+//     'close'
+//   ]
+// });
 
-$("[data-fancybox='gallery']").fancybox({
-  type: "image", // Указываем тип контента как изображение
-  buttons: [
-    "rotateButton",
-    "zoom",
-    "slideShow",
-    "fullScreen",
-    "download",
-    "thumbs",
-    "close",
-  ],
+// $("[data-fancybox='gallery']").fancybox({
+//   type: "image", // Указываем тип контента как изображение
+//   buttons: [
+//     "rotateButton",
+//     "zoom",
+//     "slideShow",
+//     "fullScreen",
+//     "download",
+//     "thumbs",
+//     "close",
+//   ],
   // btnTpl: {
   //   rotateButton:
   //     '<button data-fancybox-rotate class="fancybox-button fancybox-button--rotate" title="Rotate Image">' +
@@ -70,4 +70,93 @@ $("[data-fancybox='gallery']").fancybox({
   //     "</button>", // Задаем класс fancybox-button--close
   // },
   
-});
+// });
+// $.fancybox.defaults.btnTpl.map = '<button data-fancybox-exif class="fancybox-button fancybox-button--map" title="Посмотреть на карте" onclick="map()">' +
+// '<img src="../storage/img/site/map.png"  class="roundbutton"  alt="Посмотреть на карте" title="Посмотреть на карте" >'  +
+//   '</button>';
+
+$('[data-fancybox="gallery"]').fancybox({
+  type: 'image',
+  buttons : [
+    'clear',
+    'map',
+    'close'
+],
+btnTpl: {
+  map: '<button data-fancybox-map class="fancybox-button fancybox-button--map" title="Посмотреть на карте">' +
+    '<img src="../storage/img/site/map.png" class="roundbutton" alt="Посмотреть на карте" title="Посмотреть на карте">' +
+    '</button>',
+  
+  clear: '<button data-fancybox-map class="fancybox-button fancybox-button--map" title="Посмотреть на карте">' +
+  '<img src="../storage/img/site/clear.svg" class="roundbutton" alt="Удалить" title="Удалить">' +
+  '</button>'
+  },
+  afterShow: function(instance, current) {
+    // Добавьте ваш обработчик события клика на кнопку "map" здесь
+    $('[data-fancybox-map]').on('click', function() {
+      let photo_id = current.opts.$orig.find('img').data('id');
+      let csrfToken = $('meta[name="csrf-token"]').attr('content');
+      
+      let form = $('<form action="/photo/map" method="POST">' +
+      '<input type="hidden" name="_token" value="' + csrfToken + '">' +
+        '<input type="hidden" name="dataId" value="' + photo_id + '">' +
+        '</form>');
+      $('body').append(form);
+      form.submit();
+    }),
+    $('[data-fancybox-map]').on('click', function() {
+      let photo_id = current.opts.$orig.find('img').data('id');
+      let csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+      let form = $('<form action="/photo/delete" method="POST">' +
+      '<input type="hidden" name="_token" value="' + csrfToken + '">' +
+        '<input type="hidden" name="dataId" value="' + photo_id + '">' +
+        '</form>');
+      $('body').append(form);
+      form.submit();
+    })
+  }
+})
+
+
+$('[data-fancybox="images"]').fancybox({
+  type: 'image',
+  buttons : [
+    'map',
+    'close'
+],
+btnTpl: {
+  map: '<button data-fancybox-map class="fancybox-button fancybox-button--map" title="Посмотреть на карте">' +
+    '<img src="../storage/img/site/map.png" class="roundbutton" alt="Посмотреть на карте" title="Посмотреть на карте">' +
+    '</button>',
+  
+  clear: '<button data-fancybox-map class="fancybox-button fancybox-button--map" title="Посмотреть на карте">' +
+  '<img src="../storage/img/site/clear.svg" class="roundbutton" alt="Удалить" title="Удалить">' +
+  '</button>'
+  },
+  afterShow: function(instance, current) {
+    // Добавьте ваш обработчик события клика на кнопку "map" здесь
+    $('[data-fancybox-map]').on('click', function() {
+      let photo_id = current.opts.$orig.find('img').data('id');
+      let csrfToken = $('meta[name="csrf-token"]').attr('content');
+      
+      let form = $('<form action="/photo/map" method="POST">' +
+      '<input type="hidden" name="_token" value="' + csrfToken + '">' +
+        '<input type="hidden" name="dataId" value="' + photo_id + '">' +
+        '</form>');
+      $('body').append(form);
+      form.submit();
+    }),
+    $('[data-fancybox-map]').on('click', function() {
+      let photo_id = current.opts.$orig.find('img').data('id');
+      let csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+      let form = $('<form action="/photo/delete" method="POST">' +
+      '<input type="hidden" name="_token" value="' + csrfToken + '">' +
+        '<input type="hidden" name="dataId" value="' + photo_id + '">' +
+        '</form>');
+      $('body').append(form);
+      form.submit();
+    })
+  }
+})

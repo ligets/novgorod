@@ -6,6 +6,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/reset.css',
+                'resources/css/fancybox.css',
                 'resources/css/upload.css',
                 'resources/css/scrollbar.css',
                 'resources/css/createAlbum.css',
@@ -26,6 +27,8 @@ export default defineConfig({
                 'resources/js/masonry.pkgd.js',
                 'resources/js/upload.js',
                 'resources/js/masonry.pkgd.min.js',
+                'resources/js/fancybox.umd.js',
+                'resources/js/album.js'
             ],
             refresh: true,
         }),

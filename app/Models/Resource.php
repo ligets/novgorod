@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\Album;
 use App\Models\Type;
 use App\Models\User;
+use App\Models\AlbumResource;
 
 class Resource extends Model
 {
@@ -19,7 +20,8 @@ class Resource extends Model
         'path',
         'format',
         'in_album',
-        'type_id'
+        'type_id',
+        'metadata_id'
     ];
 
     public function tags() {
@@ -30,10 +32,18 @@ class Resource extends Model
         return $this->belongsToMany(Album::class, 'album_resources', 'resource_id', 'album_id');
     }
 
+    public function album() {
+        return $this->belongsTo(AlbumResource::class);
+    }
+
     public function type() {
         return $this->belongsTo(Type::class);
     }
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function metadata(){
+        return $this->belongsTo(Metadata::class);
     }
 }

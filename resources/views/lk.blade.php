@@ -87,15 +87,23 @@ footer {
                 <button class="edit_button"><img src="{{ asset('storage/img/site/pen.svg') }}" alt="pen" class="pen"></button>
             </div>
         </div>
-        <div class="cont d-flex col-md-5 ps-3 pe-0">
-            <span class="black col-md-10">{{ $user->email }}</span>
-            <button class="edit_button black col-md-2 justify-content-end bre"><img src="{{ asset('storage/img/site/penBlack.svg') }}" alt="pen" class="pen black"></button>
+        <div class="col-md-12 d-flex justify-content-center">
+            <div class="cont d-flex col-md-5 ps-3 pe-0">
+                <span class="black col-md-10">{{ $user->email }}</span>
+                <button class="edit_button black col-md-2 justify-content-end bre"><img src="{{ asset('storage/img/site/penBlack.svg') }}" height="24px" alt="pen" class="pen black"></button>
+            </div>
         </div>
-        <div>
-            <span>Сменить пароль</span>
-            <button><img src="" alt=""></button>
+        <div class="col-md-12 mt-2 d-flex justify-content-center">
+            <div class="cont d-flex col-md-5 ps-3 pe-0">
+                <span class="black col-md-10">Сменить пароль</span>
+                <button class="edit_button black col-md-2 justify-content-end bre"><img src="{{ asset('storage/img/site/penBlack.svg') }}" height="24px" alt="pen" class="pen black"></button>
+            </div>
         </div>
-        <button>Выход</button>
+        <form action="/auth/logout" method="post" class="col-md-12 mt-2 mb-3 d-flex justify-content-center">
+            @csrf
+            <button type="submit" class="btn border border-dark btn-light" id="exit">Выход</button>
+        </form>
+        
     </div>
 </main>
 @endsection

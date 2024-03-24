@@ -1,14 +1,18 @@
 <header class="d-flex flex-row align-items-center justify-content-between py-3 theme-changeable header">
     <div class="col-md-4">
-        <a id="header-txt" href="/" class="d-flex align-items-center ms-4 col-md-5 mb-1 mb-md-0 text-dark text-decoration-none">#Главная</a>
+        <a id="header-txt" href="/" class="d-flex align-items-center ms-4 col-md-5 mb-1 mb-md-0 text-dark text-decoration-none">#ImageHub</a>
     </div>
     <div class="container d-flex align-items-center justify-content-center col-md-4 me-4">
-        <div class="input-group">
-            <input type="search" class="form-control theme-changeable" placeholder="Поиск...." aria-label="Search">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+        <form action="{{ route('search') }}" method="GET" class="input-group d-flex justify-content-center">
+            <select name="tags[]" id="searchCont" multiple>
+                @foreach(App\Models\Tag::all() as $tag)
+                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                @endforeach
+            </select>
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
                 <img src="{{ asset('storage/img/site/search-ico.png') }}" alt="Иконка поиска" class="search-ico">
             </button>
-        </div>
+        </form>
     </div>
 
     <div class="container d-flex flex-row align-items-center justify-content-end col-md-3 mb-md-0 ">
@@ -26,7 +30,9 @@
                 @else
                 <a href="/gallery" class="btn btn-outline-dark rounded-pill">Галлерея</a>
                 @endif
+            @if(!Request::is('lk'))
             <a href="/lk" class="btn btn-outline-dark rounded-pill">Личный кабинет</a>
+            @endif
             @endauth
         </div>
     </div>

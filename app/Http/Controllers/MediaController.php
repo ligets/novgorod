@@ -7,6 +7,7 @@ use App\Models\Resource;
 use App\Models\AlbumResource;
 use App\Models\UserAlbum;
 use App\Models\Album;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class MediaController extends Controller
@@ -28,17 +29,11 @@ class MediaController extends Controller
                             ->inRandomOrder()
                             ->limit(10)
                             ->get();
-        return view('home', compact('photos', 'movies', 'albums'));
+        $fancybox = 'images';
+        return view('home', compact('photos', 'movies', 'albums', 'fancybox'));
     }
 
     public static function albumMedia($id){
-    //     $album_resources = AlbumResource::where('album_id', $id)->get();
-    //     // return $album_resources->resource;
-    //     $media = [];
-    //     foreach($album_resources as $resource){
-    //         $media[] = $resource->resource;
-    //     }
-    //     return view('media', compact('media'));
         $album = Album::where('id', $id)->first();
         $authors = UserAlbum::where('album_id', $id)->whereNot('role', 'owner')->get();
         $albumResources = AlbumResource::where('album_id', $id)
@@ -47,9 +42,27 @@ class MediaController extends Controller
             ->groupBy(function ($albumResource) {
                 return $albumResource->resource->format; // Группировка по формату
             });
-        $role = UserAlbum::where('user_id', Auth::user()->id)->where('album_id', $id)->first()->role;
+        $userAlbum = UserAlbum::where('user_id', Auth::user()->id)->where('album_id', $id)->first();
+        $role = $userAlbum ? $userAlbum->role : null;
         $images = $albumResources->get('image', collect()); // Получение массива ресурсов изображений
         $videos = $albumResources->get('video', collect()); // Получение массива ресурсов видео
+        
         return view('media', compact('images', 'videos', 'album', 'authors', 'role'));
+    }
+
+    public function getMap(Request $req){
+        $meta = Resource::where('id', $req->dataId)->first()->metadata;
+        return view('map', compact('meta'));
+    }
+    public function delete(Request $req){
+        $resources = Resource::where('id', $req->dataId)->first();
+        if($resources->user_id !== Auth::user()->id){
+            return abort(403, 'Доступ запрещён');
+        }
+        $resources->albums()->detach();
+        $resources->tags()->detach();
+        $resources->delete();
+        Storage::disk('public')->delete($resources->path);
+        return redirect('gallery');
     }
 }

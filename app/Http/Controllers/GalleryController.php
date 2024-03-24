@@ -10,11 +10,9 @@ use Illuminate\Support\Facades\Auth;
 class GalleryController extends Controller
 {
     public function get() {
-        // $resources = Resource::where('user_id', Auth::user()->id)
-        //                         ->where('type_id', 3);
         $user_id = Auth::user()->id;
         $resources = Resource::where('user_id', $user_id)
-                                ->where('type_id', 3)
+                                ->whereNot('type_id', 2)
                                 ->where('in_album', false)
                                 ->get()
                                 ->groupBy('format');

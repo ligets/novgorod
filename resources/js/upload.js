@@ -1,14 +1,11 @@
 $(document).ready(function() {
     // Инициализация Resumable.js
-
+    console.log($('#uploadModal').data('album'))
     var r = new Resumable({
         target: '/resources/upload',
         query: {
             _token: $('meta[name="csrf-token"]').attr('content'),
-            type: '1',
-            tags: 'Ex1, Ex2, Ex3',
-            title: "Это название ресурса"
-            // in_album: '1'
+            in_album: $('#uploadModal').data('album')
         },
         fileType: [
             // RAW
@@ -38,6 +35,10 @@ $(document).ready(function() {
     $("#uploadForm").on('click', '#submitBtn', function(event) {
         event.preventDefault(); // Предотвращаем обычную отправку формы
         if (r.files.length > 0) {
+            let tagsValue = JSON.stringify($('#tagsCont').val());
+            r.opts.query.tags = tagsValue;
+            r.opts.query.type = $("input[name='type']:checked").val(),
+            console.log($("input[name='type']:checked").val());
             r.upload(); // Запускаем процесс загрузки
         } else {
             alert('Выберите файл для загрузки.');
@@ -49,7 +50,9 @@ $(document).ready(function() {
         $('#prevImage').css('display', 'none').attr('src', '');
         $('#prevVideo').css('display', 'none').attr('src', '');
         $('#imageFile').val('');
+        $('#tagsCont').select2("destroy");
         $('#uploadForm #btn_cont').remove()
+        $("#uploadForm #info").remove();
     });
 
     r.on('fileProgress', function (file) { // trigger when file progress update
@@ -82,7 +85,16 @@ $(document).ready(function() {
                 $('#labelInput').css('display', 'none');
                 $('#prevImage').attr('src', e.target.result).css('display', 'block');
             }
-            $('#uploadForm').append('<div class="col-md-12 d-flex justify-content-center align-items-center mt-2" id="btn_cont"><button id="cancelBtn" class="btn border-dark col-md-4" data-dismiss="modal">Отмена</button><button id="submitBtn" class="btn border-dark col-md-4 ms-2">Отправить</button></div>')
+            $("#info").css('display', 'block')
+            $('#tagsCont').select2({
+                placeholder: "Выбор тегов",
+                tags: true,
+                width: 'auto'
+            })
+            $('#Type').removeClass('d-none').addClass('d-flex');
+            $("#uploadForm").append(
+                '<div class="col-md-12 d-flex justify-content-center align-items-center mt-2" id="btn_cont"><button id="cancelBtn" class="btn border-dark col-md-4" data-dismiss="modal">Очистить</button><button id="submitBtn" class="btn border-dark col-md-4 ms-2">Отправить</button></div>'
+            );
         }
         reader.readAsDataURL(input.files[0]);
         // Добавляем файл в Resumable.js

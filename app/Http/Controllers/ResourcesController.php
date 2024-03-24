@@ -42,7 +42,7 @@ class ResourcesController extends Controller
             throw new UploadMissingFileException();
         }
         $in_album = false;
-        if(isset($request->in_album)){
+        if($request->in_album !== 'null'){
             $in_album = $request->in_album;
         }        
 
@@ -53,7 +53,7 @@ class ResourcesController extends Controller
         if ($save->isFinished()) {
             $type = $request->type;
 
-            $tags = explode(', ', $request->tags);
+            $tags = $request->tags;
             // save the file and return any response you need, current example uses `move` function. If you are
             // not using move, you need to manually delete the file by unlink($save->getFile()->getPathname())
             return $this->saveFile($save->getFile(), $in_album, $type, $tags, $request->title);
@@ -95,23 +95,20 @@ class ResourcesController extends Controller
 
         $fileName = $this->createFilename($file);
 
-        // Group files by mime type
         $mime = str_replace('/', '-', $file->getMimeType());
 
-        // Group files by the date (week
         $dateFolder = date("Y-m-W");
 
-        // Build the file path
         $filePath = "upload/{$mime}/{$dateFolder}";
         $finalPath = storage_path("app/public/" . $filePath);
 
-        // move the file name
         $file->move($finalPath, $fileName);
 
         $fileFormat = $this->detectFileFormat($file);
         
         $fullPath = Storage::disk('public')->path($filePath . '/' . $fileName);
         $file = new \Illuminate\Http\UploadedFile($fullPath, $fileName);
+        $metadata = null;
 
         if ($file && $file->getMimeType() === 'image/jpeg') {
             // Читаем данные EXIF из изображения
@@ -140,26 +137,25 @@ class ResourcesController extends Controller
                 $metadata->save();
 
                 // Выводим HTML с картой и ссылкой
-                return view('map', compact('latitude', 'longitude'));
             }
             
         }
-        else{
-            abort(444, 'ГЫ');
-        }
 
-
-
-
-        $resource = Resource::create([
+        $resourceData = [
             'user_id' => Auth::user()->id,
-            'title' => $title,
+            'title' => $title, // Предполагается, что переменная $title определена
             'path' => $filePath . '/' . $fileName,
             'format' => $fileFormat,
             'in_album' => $in_album ? true : false,
-            'type_id' => $type
-        ]);
+            'type_id' => $type,
+        ];
         
+        if ($metadata) {
+            $resourceData['metadata_id'] = $metadata->id;
+        }
+        
+        $resource = Resource::create($resourceData);
+        $tags = json_decode($tags);
         foreach ($tags as $tagName) {
             $tag = Tag::firstOrCreate([
                 'name' => $tagName
@@ -183,16 +179,6 @@ class ResourcesController extends Controller
             'name' => $fileName,
             'mime_type' => $mime
         ]);
-    }
-
-    public function getMetadata($filePath)
-    {
-        // Получаем загруженный файл
-        $file = Storage::disk('public')->get($path);
-
-        // Проверяем, что файл существует и является изображением JPEG
-        
-        abort(4404040, 'MAMA I GAY');
     }
 
     /**
@@ -254,7 +240,7 @@ class ResourcesController extends Controller
     
     protected function downloadResource($id){
         $resource = Resource::findOrFail($id);
-        $type = $resource->type()->first()->name;
+        $type = $resource->type->name;
 
         switch($type){
             case 'public':

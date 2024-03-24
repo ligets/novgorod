@@ -15,7 +15,6 @@
 <main class="col-md-12 overflow-hidden main-content theme-changeable">
     <div class="h-auto" style="padding: 0 7% 0 7%">
         <div class="row justify-content-center">
-            <div class="col-md-4"></div>
             <ul class="tabs d-flex align-items-center col-md-4 justify-content-center" id="navGallery">
                 <li>
                     <button id="photosButton" class="mr-2 active tablinks theme-changeable">Фото</button>
@@ -27,10 +26,6 @@
                     <button id="albumsButton" class="tablinks theme-changeable">Альбомы</button>
                 </li>
             </ul>
-            <div class="d-flex justify-content-end col-md-4 mt-3">
-                <button id="upload" class="active tablinks theme-changeable border p-2" style="border-radius: 20px;" data-bs-toggle="modal" data-bs-target="#uploadModal">Добавить</button>
-                <button id="download" class="active tablinks theme-changeable border p-2">Скачать альбом</button>
-            </div>
         </div>
     </div>
     <div id="photos" class="tabcontent" style="display: none;">

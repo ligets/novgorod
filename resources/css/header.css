@@ -23,6 +23,10 @@
   background-position: 100%;
 }
 
+.select2-selection {
+  height: 100%;
+}
+
 #header-txt {
   font-family: Jura;
   font-weight: 900;
